@@ -30,13 +30,13 @@ public class LeaseCalculator implements Function<Optional<LeaseStats>, Flux<Leas
     @Override
     public Flux<Lease> apply(Optional<LeaseStats> leaseStats) {
         log.info("{} stats are {}", tag, leaseStats.isPresent() ? "present" : "absent");
-        Duration ttlDuration = Duration.ofSeconds(5);
+        Duration ttlDuration = Duration.ofSeconds(10);
         // The interval function is used only for the demo purpose and should not be
         // considered as the way to issue leases.
         // For advanced RateLimiting with Leasing
         // consider adopting https://github.com/Netflix/concurrency-limits#server-limiter
         // 每2秒发送租约，租约内容为队列容量和5秒有效期
-        return Flux.interval(Duration.ZERO, ttlDuration.dividedBy(2))
+        return Flux.interval(Duration.ofSeconds(0), ttlDuration.dividedBy(2))
                 .handle((__, sink) -> {
                     // put queue.remainingCapacity() + 1 here if you want to observe that app is
                     // terminated  because of the queue overflowing

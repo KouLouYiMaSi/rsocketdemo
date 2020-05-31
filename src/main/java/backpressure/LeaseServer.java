@@ -1,31 +1,24 @@
 package backpressure;
 
-import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import io.rsocket.Payload;
 import io.rsocket.RSocket;
-import io.rsocket.core.RSocketConnector;
 import io.rsocket.core.RSocketServer;
 import io.rsocket.lease.Leases;
-import io.rsocket.lease.MissingLeaseException;
-import io.rsocket.transport.netty.client.TcpClientTransport;
 import io.rsocket.transport.netty.server.CloseableChannel;
 import io.rsocket.transport.netty.server.TcpServerTransport;
-import io.rsocket.util.ByteBufPayload;
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.retry.Retry;
 
 @Slf4j
-public class LeaseExample {
+public class LeaseServer {
 
     private static final String SERVER_TAG = "server";
-    private static final String CLIENT_TAG = "client";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // Queue for incoming messages represented as Flux
         // Imagine that every fireAndForget that is pushed is processed by a worker
         int queueCapacity = 50;
@@ -37,8 +30,8 @@ public class LeaseExample {
                             try {
                                 while (!Thread.currentThread().isInterrupted()) {
                                     String message = messagesQueue.take();
-                                    System.out.println("Process message {}" + message);
-                                    Thread.sleep(500); // emulating processing
+                                    System.out.println("消费者线程处理消息：" + message);
+                                    Thread.sleep(100000); // emulating processing
                                 }
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
@@ -46,39 +39,7 @@ public class LeaseExample {
                         });
         workerThread.start();
         CloseableChannel server = getFireAndForgetServer(messagesQueue, workerThread);
-
-        LeaseReceiver receiver = new LeaseReceiver(CLIENT_TAG);
-        RSocket clientRSocket =
-                RSocketConnector.create()
-                        .lease(() -> Leases.create().receiver(receiver))
-                        .connect(TcpClientTransport.create(server.address()))
-                        .block();
-
-        Objects.requireNonNull(clientRSocket);
-        // generate stream of fnfs
-        Flux.generate(() -> 0L, (state, sink) -> {
-            sink.next(state);
-            return state + 1;
-        })
-                // here we wait for the first lease for the responder side and start execution
-                // on if there is allowance
-                .delaySubscription(receiver.notifyWhenNewLease().then())
-                .concatMap(tick -> {
-                            System.out.println("Requesting FireAndForget({})" + tick);
-                            return Mono.defer(() -> clientRSocket.fireAndForget(ByteBufPayload.create("" + tick)))
-                                    .retryWhen(Retry.indefinitely()
-                                                    // ensures that error is the result of missed lease
-                                                    .filter(t -> t instanceof MissingLeaseException)
-                                                    .doBeforeRetryAsync(
-                                                            rs -> {
-                                                                // here we create a mechanism to delay the retry until
-                                                                // the new lease allowance comes in.
-                                                                System.out.println("Ran out of leases {}" + rs);
-                                                                return receiver.notifyWhenNewLease().then();
-                                                            }));
-                        })
-                .blockLast();
-        clientRSocket.onClose().block();
+        TimeUnit.MINUTES.sleep(10);
         server.dispose();
     }
 

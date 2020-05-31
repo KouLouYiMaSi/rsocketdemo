@@ -1,0 +1,29 @@
+<component name="libraryTable">
+  <library name="Maven: io.projectreactor:reactor-core:3.3.5.RELEASE">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/projectreactor/reactor-core/3.3.5.RELEASE/reactor-core-3.3.5.RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/io/projectreactor/reactor-core/3.3.5.RELEASE/reactor-core-3.3.5.RELEASE-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/projectreactor/reactor-core/3.3.5.RELEASE/reactor-core-3.3.5.RELEASE-sources.jar!/" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/benchmarks/src/main/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/buildSrc/src/main/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/buildSrc/src/test/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-core/src/blockHoundTest/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-core/src/main/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-core/src/main/java8stubs" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-core/src/main/java9stubs" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-core/src/test/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-test/src/main/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-test/src/test/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-tools/src/buildPluginTest/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-tools/src/jarFileTest/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-tools/src/javaAgentTest/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-tools/src/main/java" />
+      <root url="file://$USER_HOME$/Downloads/reactor-core-3.3.5.RELEASE/reactor-tools/src/test/java" />
+    </SOURCES>
+  </library>
+</component>

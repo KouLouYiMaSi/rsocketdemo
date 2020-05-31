@@ -17,6 +17,7 @@ import reactor.core.publisher.ReplayProcessor;
 public class LeaseReceiver implements Consumer<Flux<Lease>> {
 
     final String tag;
+    // 缓存最后一个租约，每当新的订阅者订阅的时候就回放这个租约
     final ReplayProcessor<Lease> lastLeaseReplay = ReplayProcessor.cacheLast();
 
     public LeaseReceiver(String tag) {
@@ -34,8 +35,7 @@ public class LeaseReceiver implements Consumer<Flux<Lease>> {
     }
 
     /**
-     * This method allows to listen to new incoming leases and delay some action (e.g . retry) until
-     * new valid lease has come in
+     * 通知新的有效租约的到来
      */
     public Mono<Lease> notifyWhenNewLease() {
         return lastLeaseReplay.filter(l -> l.isValid()).next();
